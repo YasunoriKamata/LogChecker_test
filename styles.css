@@ -39,20 +39,3 @@ h1 {
 .btn:hover {
   background-color: #0056b3;
 }
-
-.back-btn {
-  margin-top: 30px;
-  background-color: #6c757d;
-}
-
-.back-btn:hover {
-  background-color: #545b62;
-}
-
-.content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
-}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="葉山ライフセービングクラブの出勤簿システム(管理者用)">
+  <meta name="author" content="Yasunori Kamata">
+  <title>出勤簿管理者サイト</title>
+  <!-- スタイルシート -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- スクリプト -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>入力状態確認</h1>
+    <div class="date-selector">
+      <label for="checkDate">確認したい日付を選択:</label>
+      <input type="date" id="date" name="checkDate">
+      <button onclick="checkStatus()" class="btn">確認</button>
+    </div>
+
+    <div class="status-container">
+      <div class="status-block">
+        <h3>森戸海岸監視所</h3>
+        <div class="status-fields-container">
+          <div class="status-field">
+            <label>記入者:</label>
+            <span id="writer1" class="status-value">-</span>
+          </div>
+          <div class="status-field">
+            <label>監視長:</label>
+            <span id="supervisor1" class="status-value">-</span>
+          </div>
+        </div>
+        <section id="attendanceTable">
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>勤務形態</th>
+                <th>出勤時刻</th>
+                <th>退勤時刻</th>
+                <th>バッチテスト</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tbody id="attendanceTableBody1">
+              <!-- ここに行が動的に追加される -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="status-block">
+        <h3>一色海岸監視所</h3>
+        <div class="status-fields-container">
+          <div class="status-field">
+            <label>記入者:</label>
+            <span id="writer1" class="status-value">-</span>
+          </div>
+          <div class="status-field">
+            <label>監視長:</label>
+            <span id="supervisor1" class="status-value">-</span>
+          </div>
+        </div>
+        <section id="attendanceTable">
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>勤務形態</th>
+                <th>出勤時刻</th>
+                <th>退勤時刻</th>
+                <th>バッチテスト</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tbody id="attendanceTableBody2">
+              <!-- ここに行が動的に追加される -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="status-block">
+        <h3>長者ヶ崎海岸監視所</h3>
+        <div class="status-fields-container">
+          <div class="status-field">
+            <label>記入者:</label>
+            <span id="writer1" class="status-value">-</span>
+          </div>
+          <div class="status-field">
+            <label>監視長:</label>
+            <span id="supervisor1" class="status-value">-</span>
+          </div>
+        </div>
+        <section id="attendanceTable">
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>勤務形態</th>
+                <th>出勤時刻</th>
+                <th>退勤時刻</th>
+                <th>バッチテスト</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tbody id="attendanceTableBody3">
+              <!-- ここに行が動的に追加される -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="status-block">
+        <h3>イベント</h3>
+        <div class="status-fields-container">
+          <div class="status-field">
+            <label>記入者:</label>
+            <span id="writer1" class="status-value">-</span>
+          </div>
+          <div class="status-field">
+            <label>監視長:</label>
+            <span id="supervisor1" class="status-value">-</span>
+          </div>
+        </div>
+        <section id="attendanceTable">
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>勤務形態</th>
+                <th>出勤時刻</th>
+                <th>退勤時刻</th>
+                <th>バッチテスト</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tbody id="attendanceTableBody4">
+              <!-- ここに行が動的に追加される -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
