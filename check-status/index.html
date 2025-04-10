@@ -21,8 +21,8 @@
       <label for="checkDate">確認したい日付を選択:</label>
       <input type="date" id="date" name="checkDate">
       <button onclick="checkStatus()" class="btn">確認</button>
-      <button onclick="toTheDayBefore()" class="btn">＜前日</button>
-      <button onclick="toTheDayAfter()" class="btn">翌日＞</button>
+      <button onclick="moveDay(-1)" class="btn">＜前日</button>
+      <button onclick="moveDay(1)" class="btn">翌日＞</button>
     </div>
 
     <div class="status-container">

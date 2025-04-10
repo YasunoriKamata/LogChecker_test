@@ -24,7 +24,7 @@ h1 {
   gap: 20px;
   margin-top: 5px;
   user-select: none;
-  cursor: grab;
+  /* cursor: grab; */
   -webkit-overflow-scrolling: touch;
 }
 
