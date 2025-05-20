@@ -22,11 +22,11 @@
       <form id="addMemberForm">
         <div class="form-group">
           <label for="name">名前</label>
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="name" name="name" autocomplete="name" required>
         </div>
         <div class="form-group">
           <label for="namek">名前(カナ)</label>
-          <input type="text" id="namek" name="namek" required>
+          <input type="text" id="namek" name="namek" autocomplete="off" required>
         </div>
         <div class="button-group">
           <a href="../index.html" class="btn back-btn">
@@ -39,6 +39,7 @@
       </form>
     </div>
   </div>
+  <div id="overlay" style="display: none;"></div>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 const NAMELIST_URL = "https://script.google.com/macros/s/AKfycbxpmVaEqKuk_YU2w79Rojsc_0vBLh8aNWvCUOK61NmDi2ib672f7XqjXYtZQW8Z7GTn/exec";
 
 // ボタン処理
-function execRegist() {
+async function execRegist() {
   $('body').css('cursor', 'wait');
   $('#overlay').show();
 
@@ -12,12 +12,12 @@ function execRegist() {
       name: $('#name').val(),
       namekana: $('#namek').val(),
     };
-    const response = fetch(NAMELIST_URL, {
+    const response = await fetch(NAMELIST_URL, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(requestData)
     });
-    const result = response.json();
+    const result = await response.json();
     if (result.status === 'error') {
       //何かしら失敗したら入る
       Swal.fire({
@@ -38,11 +38,11 @@ function execRegist() {
       timer: 2000
     });
   } catch (e) {
-    console.error(`クラブ員登録処理失敗 [${new Date().toISOString()}]：`, error);
+    console.error(`クラブ員登録処理失敗 [${new Date().toISOString()}]：`, e);
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      html: error.message,
+      html: e.message,
     });
   } finally {
     $('body').css('cursor', 'default');
