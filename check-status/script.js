@@ -7,22 +7,23 @@ const ROW_TEMPLATE = `
         <td>-</td>
         <td>-</td>
         <td>-</td>
+        <td>-</td>
     </tr>
   `;
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyu0mCvUeOs_wMg0PZExPkK1_MnEhT4f8vdGsmoZjBo1YMg5pIovVHHYvXpg1XdCClz/exec";
-const ROWS = 3;
-let dataCache = null; // キャッシュの管理を行う関数
+const ROWS = 1;
+let dataCache = null; // キャッシュ
 
 // 初期処理
 $(document).ready(function () {
+  // 全データを取得
+  fetchAllData();
+
   // 行の動的追加
   initRow();
 
   // 今日の日付を設定
   document.getElementById('date').value = new Date().toISOString().split('T')[0];
-
-  // 全データを取得
-  fetchAllData();
 
   // ドラッグスクロールの実装
   initDragScroll();
@@ -78,12 +79,6 @@ function initDragScroll() {
   });
 }
 
-// エラーメッセージを表示する関数
-function showError(message, error = null) {
-  console.error(message, error);
-  alert(message);
-}
-
 // ローディング表示を制御する関数
 function setLoading(isLoading) {
   if (isLoading) {
@@ -95,38 +90,12 @@ function setLoading(isLoading) {
   }
 }
 
-// データを取得する共通関数
-async function fetchData() {
-  try {
-    setLoading(true);
-
-    const response = await fetch(GAS_URL, {
-      method: 'GET',
-      mode: 'cors'
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const responseData = await response.json();
-
-    if (responseData.status !== 'success') {
-      throw new Error(responseData.message || 'データの取得に失敗しました');
-    }
-
-    return responseData;
-  } catch (error) {
-    showError('データの取得中にエラーが発生しました', error);
-    throw error;
-  } finally {
-    setLoading(false);
-  }
-}
-
 // 全データを取得する関数
 async function fetchAllData() {
   try {
+    setLoading(true);
+
+    console.log(`全データを取得開始：[${getJSTISOString()}]`);
     const responseData = await fetchData();
 
     // 全データをキャッシュに保存
@@ -141,10 +110,33 @@ async function fetchAllData() {
       updateDisplay(responseData[formattedToday]);
     }
 
-    console.log('全データを取得しました');
+    console.log(`全データを取得完了：[${getJSTISOString()}]`);
   } catch (error) {
-    // エラーは既にfetchDataで処理されているため、ここでは何もしない
+    console.error(`データ取得処理失敗：[${getJSTISOString()}]：`, error);
+  } finally {
+    setLoading(false);
   }
+}
+
+// データを取得する共通関数
+async function fetchData() {
+  const response = await fetch(GAS_URL, {
+    method: 'GET',
+    mode: 'cors'
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const responseData = await response.json();
+
+  if (responseData.status !== 'success') {
+    console.error(`データ取得処理失敗：[${getJSTISOString()}]：`, responseData.message);
+    return null; // エラー時はnullを返す
+  }
+
+  return responseData;
 }
 
 //「確認」ボタン押下時の処理
@@ -156,6 +148,8 @@ async function checkStatus() {
       return;
     }
 
+    initRow(); // まずは初期化
+
     // 全データから選択された日付のデータを取得
     const formattedDate = formatDateForAPI(selectedDate);
     if (dataCache && dataCache[formattedDate]) {
@@ -163,11 +157,8 @@ async function checkStatus() {
       return;
     }
 
-    // 全データにない場合はテーブル初期化
-    initRow();
-
   } catch (error) {
-    // エラーは既にfetchDataで処理されているため、ここでは何もしない
+    console.error(`データ表示処理失敗：[${getJSTISOString()}]：`, error);
   }
 }
 
@@ -181,13 +172,17 @@ function updateDisplay(data) {
 
 // 各監視所の情報を更新する関数
 function updateLocationInfo(index, locationData) {
+  if (!locationData) {
+    return; // locationDataがnullまたはundefinedの場合は処理をスキップ
+  }
+
   const writerElement = document.getElementById(`writer${index}`);
   const supervisorElement = document.getElementById(`supervisor${index}`);
   const tableBody = document.getElementById(`attendanceTableBody${index}`);
 
   if (writerElement && supervisorElement) {
-    writerElement.textContent = locationData.writer || '*';
-    supervisorElement.textContent = locationData.supervisor || '*';
+    writerElement.textContent = locationData.writer;
+    supervisorElement.textContent = locationData.supervisor;
   }
 
   // テーブルの内容をクリア
@@ -202,11 +197,12 @@ function updateLocationInfo(index, locationData) {
       locationData.details.forEach(detail => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${detail.name || '-'}</td>
-          <td>${detail.type == 1 ? '日勤' : '時間勤務'}</td>
+          <td>${detail.name || ''}</td>
+          <td>${detail.volunteer == 1 ? '✓' : ''}</td>
+          <td>${detail.type == 1 ? '日勤' : '時間勤'}</td>
           <td>${detail.startTime || ''}</td>
           <td>${detail.endTime || ''}</td>
-          <td>${detail.batchTest == 1 ? '実施' : ''}</td>
+          <td>${detail.batchTest == 1 ? '✓' : ''}</td>
           <td>${detail.remarks || ''}</td>
         `;
         fragment.appendChild(row);
@@ -218,6 +214,14 @@ function updateLocationInfo(index, locationData) {
       tableBody.innerHTML = ROW_TEMPLATE;
     }
   }
+}
+
+//日本時間取得
+function getJSTISOString() {
+  const now = new Date();
+  const jstOffset = 9 * 60 * 60 * 1000; // UTC+9時間をミリ秒で計算
+  const jstDate = new Date(now.getTime() + jstOffset);
+  return jstDate.toISOString().replace('T', ' ').slice(0, 23); // ミリ秒3桁まで
 }
 
 // 日付フォーマット変換のユーティリティ関数
