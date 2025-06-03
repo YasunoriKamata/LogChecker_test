@@ -11,6 +11,7 @@
   <!-- スタイルシート -->
   <link rel="stylesheet" href="styles.css">
   <!-- スクリプト -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="script.js"></script>
 </head>
@@ -29,10 +30,12 @@
     <div class="status-container">
       <div class="status-block">
         <h3>森戸海岸監視所</h3>
+        <button onclick="addRow(1)" class="btn">行追加</button>
+        <button onclick="execUpdate(1)" class="btn">修正登録</button>
         <div class="status-fields-container">
           <div class="status-field">
             <label>記入者:</label>
-            <span id="writer1" class="status-value">-</span>
+            <span id="recorder1" class="status-value">-</span>
           </div>
           <div class="status-field">
             <label>監視長:</label>
@@ -62,10 +65,12 @@
 
       <div class="status-block">
         <h3>一色海岸監視所</h3>
+        <button onclick="addRow(2)" class="btn">行追加</button>
+        <button onclick="execUpdate(2)" class="btn">修正登録</button>
         <div class="status-fields-container">
           <div class="status-field">
             <label>記入者:</label>
-            <span id="writer2" class="status-value">-</span>
+            <span id="recorder2" class="status-value">-</span>
           </div>
           <div class="status-field">
             <label>監視長:</label>
@@ -95,10 +100,12 @@
 
       <div class="status-block">
         <h3>長者ヶ崎海岸監視所</h3>
+        <button onclick="addRow(3)" class="btn">行追加</button>
+        <button onclick="execUpdate(3)" class="btn">修正登録</button>
         <div class="status-fields-container">
           <div class="status-field">
             <label>記入者:</label>
-            <span id="writer3" class="status-value">-</span>
+            <span id="recorder3" class="status-value">-</span>
           </div>
           <div class="status-field">
             <label>監視長:</label>
@@ -128,10 +135,12 @@
 
       <div class="status-block">
         <h3>イベント</h3>
+        <button onclick="addRow(4)" class="btn">行追加</button>
+        <button onclick="execUpdate(4)" class="btn">修正登録</button>
         <div class="status-fields-container">
           <div class="status-field">
             <label>記入者:</label>
-            <span id="writer4" class="status-value">-</span>
+            <span id="recorder4" class="status-value">-</span>
           </div>
           <div class="status-field">
             <label>監視長:</label>
@@ -159,9 +168,29 @@
         </section>
       </div>
     </div>
-
-  </div>
-  <div id="overlay" style="display: none;"></div>
+    <!-- 時刻選択用のリスト -->
+    <datalist id="data-list">
+      <option value="08:00"></option>
+      <option value="08:30"></option>
+      <option value="09:00"></option>
+      <option value="09:30"></option>
+      <option value="10:00"></option>
+      <option value="10:30"></option>
+      <option value="11:00"></option>
+      <option value="11:30"></option>
+      <option value="12:00"></option>
+      <option value="12:30"></option>
+      <option value="13:00"></option>
+      <option value="13:30"></option>
+      <option value="14:00"></option>
+      <option value="14:30"></option>
+      <option value="15:00"></option>
+      <option value="15:30"></option>
+      <option value="16:00"></option>
+      <option value="16:30"></option>
+      <option value="17:00"></option>
+    </datalist>
+    <div id="overlay" style="display: none;"></div>
 </body>
 
 </html>
