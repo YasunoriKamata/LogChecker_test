@@ -19,7 +19,8 @@ $(document).ready(function () {
   // 全データを取得
   fetchAllData();
 
-  // 行の動的追加
+  // ヘッダの初期化・行の動的追加
+  initHeaders();
   initRow();
 
   // 今日の日付を設定
@@ -29,7 +30,15 @@ $(document).ready(function () {
   initDragScroll();
 });
 
-// テーブルの行を初期化する関数
+// 全ての記入者・監視長の初期値を初期化
+function initHeaders() {
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById(`writer${i}`).value = '-';
+    document.getElementById(`supervisor${i}`).value = '-';
+  }
+}
+
+// テーブルの行を初期化
 function initRow() {
   // 一度にすべてのテーブルボディをクリア
   const tableBodies = [
@@ -94,6 +103,13 @@ function setLoading(isLoading) {
 async function fetchAllData() {
   try {
     setLoading(true);
+    Swal.fire({
+      title: 'データ取得中...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
 
     console.log(`全データを取得開始：[${getJSTISOString()}]`);
     const responseData = await fetchData();
@@ -114,6 +130,7 @@ async function fetchAllData() {
   } catch (error) {
     console.error(`データ取得処理失敗：[${getJSTISOString()}]：`, error);
   } finally {
+    Swal.close();
     setLoading(false);
   }
 }
@@ -148,6 +165,7 @@ async function checkStatus() {
       return;
     }
 
+    initHeaders(); // ヘッダを初期化
     initRow(); // まずは初期化
 
     // 全データから選択された日付のデータを取得
@@ -181,8 +199,8 @@ function updateLocationInfo(index, locationData) {
   const tableBody = document.getElementById(`attendanceTableBody${index}`);
 
   if (writerElement && supervisorElement) {
-    writerElement.textContent = locationData.writer;
-    supervisorElement.textContent = locationData.supervisor;
+    writerElement.value = locationData.writer;
+    supervisorElement.value = locationData.supervisor;
   }
 
   // テーブルの内容をクリア
@@ -197,14 +215,19 @@ function updateLocationInfo(index, locationData) {
       locationData.details.forEach(detail => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${detail.name || ''}</td>
-          <td>${detail.volunteer == 1 ? '✓' : ''}</td>
-          <td>${detail.type == 1 ? '日勤' : '時間勤'}</td>
-          <td>${detail.startTime || ''}</td>
-          <td>${detail.endTime || ''}</td>
-          <td>${detail.batchTest == 1 ? '✓' : ''}</td>
-          <td>${detail.remarks || ''}</td>
-        `;
+        <td><input type="text" value="${detail.name || ''}" /></td>
+        <td><input type="checkbox" ${detail.volunteer == 1 ? 'checked' : ''} /></td>
+        <td>
+          <select>
+            <option value="1" ${detail.type == 1 ? 'selected' : ''}>日勤</option>
+            <option value="2" ${detail.type == 2 ? 'selected' : ''}>時間勤</option>
+          </select>
+        </td>
+        <td><input type="time" list="data-list" value="${detail.startTime || ''}" /></td>
+        <td><input type="time" list="data-list" value="${detail.endTime || ''}" /></td>
+        <td><input type="checkbox" ${detail.batchTest == 1 ? 'checked' : ''} /></td>
+        <td><input type="text" value="${detail.remarks || ''}" /></td>
+      `;
         fragment.appendChild(row);
       });
 
@@ -213,6 +236,71 @@ function updateLocationInfo(index, locationData) {
       // データがない場合は空の行を表示
       tableBody.innerHTML = ROW_TEMPLATE;
     }
+  }
+}
+
+// ボタン処理
+async function execUpdate(location) {
+  let msg = '';
+  const selectedDate = document.getElementById('date').value.replace(/-/g, '/');
+  if (!selectedDate) {
+    alert('日付を選択してください');
+    return;
+  }
+  switch (location) {
+    case 1:
+      msg = '森戸海岸'
+      break;
+    case 2:
+      msg = '一色海岸'
+      break;
+    case 3:
+      msg = '長者ヶ崎海岸'
+      break;
+    case 4:
+      msg = 'イベント'
+      break;
+  }
+
+  alert(`${msg}：${selectedDate} の出勤簿データを修正登録します。`);
+
+  try {
+    setLoading(true);
+    console.log(`データ削除処理開始：[${getJSTISOString()}]`);
+    //削除データ作成
+    const deleteData = {
+      type: 'delete',
+      date: selectedDate,
+      location: `${location}`
+    };
+    //削除処理実行
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify(deleteData)
+    });
+
+    const result = await response.json();
+    if (result.status === 'error') {
+      //削除データがない場合などはここに入る
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: result.message,
+      });
+      console.log(`出勤簿データ登録失敗 削除データ無し？：[${getJSTISOString()}]`);
+      return
+    }
+    console.log(`データ削除処理完了：[${getJSTISOString()}]`);
+    console.log(`データ登録処理開始：[${getJSTISOString()}]`);
+
+
+
+    console.log(`データ登録処理完了：[${getJSTISOString()}]`);
+  } catch (error) {
+    console.error(`データ更新処理失敗：[${getJSTISOString()}]：`, error);
+  } finally {
+    setLoading(false);
   }
 }
 
