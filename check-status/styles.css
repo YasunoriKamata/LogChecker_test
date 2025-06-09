@@ -29,15 +29,7 @@ h1 {
 }
 
 .status-block {
-<<<<<<< HEAD
-  flex: 0 0 930px;
-=======
-<<<<<<< HEAD
   flex: 0 0 950px;
-=======
-  flex: 0 0 930px;
->>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
->>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
   min-width: 300px;
   padding: 15px;
   border: 1px solid #ccc;
@@ -142,15 +134,7 @@ select {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-<<<<<<< HEAD
-  font-size: 14px;
-=======
-<<<<<<< HEAD
   font-size: 15px;
-=======
-  font-size: 14px;
->>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
->>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
   box-sizing: border-box;
 }
 
