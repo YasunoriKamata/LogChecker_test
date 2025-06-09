@@ -33,8 +33,18 @@ $(document).ready(function () {
 // 全ての記入者・監視長の初期値を初期化
 function initHeaders() {
   for (let i = 1; i <= 4; i++) {
+<<<<<<< HEAD
     document.getElementById(`writer${i}`).value = '-';
     document.getElementById(`supervisor${i}`).value = '-';
+=======
+<<<<<<< HEAD
+    document.getElementById(`recorder${i}`).textContent = '-';
+    document.getElementById(`supervisor${i}`).textContent = '-';
+=======
+    document.getElementById(`writer${i}`).value = '-';
+    document.getElementById(`supervisor${i}`).value = '-';
+>>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
+>>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
   }
 }
 
@@ -198,9 +208,21 @@ function displayLocationInfo(index, locationData) {
   const supervisorElement = document.getElementById(`supervisor${index}`);
   const tableBody = document.getElementById(`attendanceTableBody${index}`);
 
+<<<<<<< HEAD
   if (writerElement && supervisorElement) {
     writerElement.value = locationData.writer;
     supervisorElement.value = locationData.supervisor;
+=======
+<<<<<<< HEAD
+  if (recorderElement && supervisorElement) {
+    recorderElement.textContent = locationData.writer;
+    supervisorElement.textContent = locationData.supervisor;
+=======
+  if (writerElement && supervisorElement) {
+    writerElement.value = locationData.writer;
+    supervisorElement.value = locationData.supervisor;
+>>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
+>>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
   }
 
   // テーブルの内容をクリア
@@ -240,6 +262,39 @@ function displayLocationInfo(index, locationData) {
 }
 
 // ボタン処理
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+function addRow(location) {
+  //１行しかないときは、削除してから
+  const tableBody = document.getElementById(`attendanceTableBody${location}`);
+  if (tableBody && tableBody.children.length === 1) {
+    tableBody.innerHTML = '';
+  }
+  // 新しい行を追加
+  if (tableBody) {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td><input type="text" value="" /></td>
+      <td><input type="checkbox" /></td>
+      <td>
+        <select>
+          <option value="1">日勤</option>
+          <option value="2">時間勤</option>
+        </select>
+      </td>
+      <td><input type="time" list="data-list" value="" /></td>
+      <td><input type="time" list="data-list" value="" /></td>
+      <td><input type="checkbox" /></td>
+      <td><input type="text" value="" /></td>
+    `;
+    tableBody.appendChild(newRow);
+  }
+}
+
+=======
+>>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
+>>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
 async function execUpdate(location) {
   let msg = '';
   const selectedDate = document.getElementById('date').value.replace(/-/g, '/');
@@ -274,13 +329,29 @@ async function execUpdate(location) {
       location: `${location}`
     };
     //削除処理実行
+<<<<<<< HEAD
     const response = await fetch(GAS_URL, {
+=======
+<<<<<<< HEAD
+    let response = await fetch(GAS_URL, {
+=======
+    const response = await fetch(GAS_URL, {
+>>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
+>>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(deleteData)
     });
 
+<<<<<<< HEAD
     const result = await response.json();
+=======
+<<<<<<< HEAD
+    let result = await response.json();
+=======
+    const result = await response.json();
+>>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
+>>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
     if (result.status === 'error') {
       //削除データがない場合などはここに入る
       Swal.fire({
@@ -294,9 +365,61 @@ async function execUpdate(location) {
     console.log(`データ削除処理完了：[${getJSTISOString()}]`);
     console.log(`データ登録処理開始：[${getJSTISOString()}]`);
 
+<<<<<<< HEAD
 
 
     console.log(`データ登録処理完了：[${getJSTISOString()}]`);
+=======
+<<<<<<< HEAD
+    // 登録データ作成
+    const tableBody = document.getElementById(`attendanceTableBody${location}`);
+    const rows = tableBody.querySelectorAll('tr');
+    const details = Array.from(rows).map(row => {
+      const inputs = row.querySelectorAll('input, select');
+      return {
+        name: inputs[0].value.trim(),
+        volunteer: inputs[1].checked ? 1 : 0,
+        shiftType: parseInt(inputs[2].value, 10),
+        startTime: inputs[3].value.trim(),
+        endTime: inputs[4].value.trim(),
+        batchTest: inputs[5].checked ? 1 : 0,
+        remarks: inputs[6].value.trim()
+      };
+    }).filter(detail => detail.name !== '');
+    const requestData = {
+      type: 'regist',
+      date: selectedDate,
+      location: `${location}`,
+      recorder: document.getElementById(`recorder${location}`).textContent.trim(),
+      supervisor: document.getElementById(`supervisor${location}`).textContent.trim(),
+      details: details
+    };
+
+    response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify(requestData)
+    });
+    result = await response.json();
+
+    switch (result.status) {
+      case 'success':
+        // 登録成功
+        console.log(`データ登録処理完了：[${getJSTISOString()}]`);
+        alert(`データ登録処理完了：[${getJSTISOString()}]`);
+        break;
+      case 'error':
+        // 既存データがある場合などはここに入る
+        console.log(`データ登録処理失敗 既存データ有り？：[${getJSTISOString()}]`);
+        alert(`データ登録処理失敗：[${getJSTISOString()}]`);
+        return;
+    }
+=======
+
+
+    console.log(`データ登録処理完了：[${getJSTISOString()}]`);
+>>>>>>> cec5aea6b150e679a3414f0ee35030ebfdf18568
+>>>>>>> 3f0242f016b446c51c4fa0dda93cc27b536012f9
   } catch (error) {
     console.error(`データ更新処理失敗：[${getJSTISOString()}]：`, error);
   } finally {
