@@ -29,7 +29,7 @@ h1 {
 }
 
 .status-block {
-  flex: 0 0 950px;
+  flex: 0 0 930px;
   min-width: 300px;
   padding: 15px;
   border: 1px solid #ccc;
@@ -134,7 +134,7 @@ select {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 15px;
+  font-size: 14px;
   box-sizing: border-box;
 }
 
