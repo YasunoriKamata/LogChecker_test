@@ -1,4 +1,4 @@
-const NAMELIST_URL = "https://script.google.com/macros/s/AKfycbxpmVaEqKuk_YU2w79Rojsc_0vBLh8aNWvCUOK61NmDi2ib672f7XqjXYtZQW8Z7GTn/exec";
+const NAMELIST_URL = "https://script.google.com/macros/s/AKfycbyl9G4SpHidYTbpvW7tKoWbu7OQzSwo9P2y10-jjLZZvjk53YSjWuCsKLtaHfRge5J37A/exec";
 
 
 // ボタン処理

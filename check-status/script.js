@@ -10,7 +10,7 @@ const ROW_TEMPLATE = `
         <td>-</td>
     </tr>
   `;
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyu0mCvUeOs_wMg0PZExPkK1_MnEhT4f8vdGsmoZjBo1YMg5pIovVHHYvXpg1XdCClz/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbx-Q7og408mrP9cC7108r6xuT-uoXmCVzzbPpLz59D5naxCM5tbyuAAdwwxPBaY8bDt/exec";
 const ROWS = 1;
 let dataCache = null; // キャッシュ
 
