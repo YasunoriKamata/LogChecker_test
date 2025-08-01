@@ -123,8 +123,8 @@ async function fetchAllData() {
     console.log(`キャッシュサイズ：${sizeInBytes} バイト（約 ${(sizeInBytes / 1024).toFixed(2)} KB）`);
 
     // 今日の日付のデータを表示
-    const today = new Date().toISOString().split('T')[0];
-    const formattedToday = document.getElementById('date').value;
+    const date = document.getElementById('date').value;
+    const formattedToday = formatDateForAPI(date);
     if (responseData[formattedToday]) {
       updateDisplay(responseData[formattedToday]);
     }
